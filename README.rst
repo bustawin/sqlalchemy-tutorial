@@ -25,8 +25,11 @@ differs from OS:
   to switch to the Postgres user, like ``sudo su postgres``, to be able to
   write these commands, as your regular user doesn't have access to the whole
   PSQL database.
-- Windows: Just copy and paste the commands of the ``init-db.sh`` file
-  in your CMD.
+- Windows: Add Postgres ``/bin`` from ``Program Files`` into the system ``PATH``.
+  Copy and paste the commands of the ``init-db.sh`` file in your CMD, adding
+  the option ``-U <postgres-user>`` to each command, so the command executes with
+  your postgres user. By default the postgres user is ``postgres`` and you are asked
+  to create a password for it during Postgres installation.
 
 I will be available in class to help you with any problem regarding
 the installation, so don't worry :-).
