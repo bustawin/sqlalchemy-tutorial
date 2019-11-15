@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='bustawin-sqlalchemy-tutorial',
-    version='0.1',
+    version='0.2',
     url='https://github.com/bustawin/sqlalchemy-tutorial',
     project_urls={
         'Documentation': 'http://bustawin.com',
@@ -24,7 +24,9 @@ setup(
         'sqlalchemy-citext',
         'sqlalchemy-utils[password, color, phone]',
         'Flask-SQLAlchemy',
-        'psycopg2-binary==2.8.3'
+        'psycopg2-binary==2.8.3',
+        'sqlalchemy',
+        'sqla-psql-search'
     ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
