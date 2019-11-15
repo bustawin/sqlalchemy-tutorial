@@ -24,13 +24,14 @@ class Computer(db.Model):
     manufacturer = db.Column(db.Unicode, nullable=False)
     serial_number = db.Column(db.Unicode, nullable=False)
     author_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('user.id'), nullable=False)
+    # Note that user.id is about the TABLE user,
+    # which by the SQLA of flask's translates to snake_case
     author = db.relationship(lambda: User,
+                             primaryjoin=lambda: User.id == Computer.author_id,
                              backref=db.backref('computers',
                                                 lazy=True,
                                                 cascade=db.CASCADE_DEL,
-                                                order_by=lambda: Computer.id,
-                                                collection_class=set),
-                             primaryjoin=lambda: User.id == Computer.author_id)
+                                                collection_class=set))
     # Lazy loading: emitting additional SQL queries when accessing the attribute
 
     __table_args__ = (
@@ -72,7 +73,7 @@ def add_user():
 
 
 @app.route('/pcs/', methods={'POST'})
-def hello_world():
+def create_pc():
     """Creates a PC, adding it to the database and returning it.
 
     The author of this PC is set to the first user created.
@@ -83,7 +84,7 @@ def hello_world():
     # The relationship magic happens HERE!
     # Note that user.computers starts defined as an empty set
     # DON'T DO user.computers = set()
-    user.computers.add(pc)
+    user.computers.add(pc)  # Equivalent to pc.author = user
 
     # Note that we don't have to explicitly add the computer to session
     # It is added when you relate it to an existing object or an object

@@ -20,7 +20,6 @@ class Computer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.Unicode(), nullable=False)
     model = db.Column(db.Unicode)
-    # index=True is a shortcut for a simple one-argument B+ db.Index in __table_args__
     manufacturer = db.Column(db.Unicode)
     serial_number = db.Column(db.Unicode)
 
@@ -42,6 +41,8 @@ class Computer(db.Model):
         # This + Desktop.id creates a "Join Table inheritance"
         args = {'polymorphic_identity': cls.__name__}
         if cls.__name__ == 'Computer':
+            # The attribute type is a string that automatically stores
+            # the name of the subclass the object is (i.e. "Desktop" / "Laptop")
             args['polymorphic_on'] = cls.type
         return args
 

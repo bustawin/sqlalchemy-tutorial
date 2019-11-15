@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)  # Create Flask App
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'  # In memory SQLITE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # SQLA will complain if this is True
-app.config['SQLALCHEMY_ECHO'] = True  # Print all DB transactions
+app.config['SQLALCHEMY_ECHO'] = False  # Print all DB transactions
 
 db = SQLAlchemy(app, session_options={
     'autoflush': False
@@ -31,7 +31,7 @@ def post_device():
     You can pass-in the SN as the URL query.
     """
     pc = Computer(model='foo', manufacturer='bar')
-    pc.serial_number = request.args['sn']  # Use URL argument /?sn=...
+    pc.serial_number = 'sn1'
     # Other fields are initialized as None
     db.session.add(pc)
     db.session.flush()
@@ -43,7 +43,8 @@ def post_device():
 @app.route('/<int:id>')
 def get_device(id: int):
     """Gets a PC by its ID."""
-    pc = Computer.query.filter(Computer.id == id).one()
+    select_query = Computer.query.filter(Computer.id == id)
+    pc = select_query.one()
     return make_response(str(pc))
 
 
@@ -56,7 +57,7 @@ def get_devices():
 # Tests
 client = app.test_client()
 print('Create one device (ID = 1):')
-print('Response:', client.post('/?sn=sn1').data)
+print('Response:', client.post('/').data)
 
 print('Get the first device (ID = 1):')
 print('Response:', client.get('/1').data)
