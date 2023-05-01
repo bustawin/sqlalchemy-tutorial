@@ -20,7 +20,7 @@ setup(
     python_requires='>=3.7',
     long_description=Path('README.rst').read_text('utf8'),
     install_requires=[
-        'flask==1.1',
+        'flask==2.3.2',
         'sqlalchemy-citext',
         'sqlalchemy-utils[password, color, phone]',
         'Flask-SQLAlchemy',
